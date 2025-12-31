@@ -1,18 +1,16 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
-from backend.app.analysis.stats import basic_stats
-from backend.app.report.schemas import DatasetSummary
 from io import StringIO
 
 from fastapi import UploadFile, File, HTTPException, Query
 from io import StringIO
 import pandas as pd
 
-from backend.app.analysis.stats import basic_stats
-from backend.app.analysis.imbalance import class_balance
-from backend.app.analysis.leakage import top_abs_label_correlations, leakage_warnings_from_corrs
-from backend.app.report.schemas import DatasetSummary, LeakageWarning
+from app.analysis.stats import basic_stats
+from app.analysis.imbalance import class_balance
+from app.analysis.leakage import top_abs_label_correlations, leakage_warnings_from_corrs
+from app.report.schemas import DatasetSummary, LeakageWarning
 
 
 
