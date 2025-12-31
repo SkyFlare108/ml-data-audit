@@ -1,0 +1,127 @@
+:root {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.header {
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid .card:last-child {
+  grid-column: 1 / -1;
+}
+
+.card {
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 14px;
+  padding: 16px;
+  background: white;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 260px;
+  flex: 1;
+}
+
+input[type="text"],
+input[type="file"] {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.18);
+}
+
+button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+
+.muted {
+  color: rgba(0,0,0,0.6);
+}
+
+.error {
+  color: #b00020;
+  margin-top: 10px;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+.pre {
+  overflow: auto;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.04);
+}
+
+.footer {
+  margin-top: 24px;
+}
+.card {
+  color: #111;
+}
+
+table th,
+table td {
+  color: #111;
+}
+
+.pre {
+  color: #111;
+}
+select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: white;
+}
