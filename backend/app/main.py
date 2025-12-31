@@ -20,7 +20,7 @@ app = FastAPI(title="ML Data Audit API", version="0.1.0")
 
 origins = [
   "http://localhost:5173",
-  "https://YOUR_GITHUB_USERNAME.github.io",
+  "https://skyflare108.github.io",
 ]
 
 app.add_middleware(
