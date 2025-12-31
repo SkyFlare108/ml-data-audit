@@ -69,3 +69,12 @@ async def analyze(
 
     return summary
 
+@app.get("/")
+def root():
+    return {
+        "name": "ML Data Audit API",
+        "status": "ok",
+        "health": "/health",
+        "docs": "/docs",
+        "analyze": "/analyze"
+    }
