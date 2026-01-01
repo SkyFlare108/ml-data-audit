@@ -50,6 +50,4 @@ This tool is **model-agnostic** and does not use LLM APIs.
 3. (Optional) Select a label column  
    - The analysis will recompute correlations and leakage checks relative to the selected label
 
-4. Click **Analyze**
-
-Results will appear below the upload section.
+4. Click **Analyze** and see results
