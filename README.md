@@ -5,8 +5,6 @@ A lightweight, no-LLM dataset auditing tool that helps identify common ML data i
 🔗
 Demo (GitHub Pages):  
 👉 https://skyflare108.github.io/ml-data-audit/
-Backend API (Render):  
-👉 https://ml-data-audit.onrender.com  
 API Docs:  
 👉 https://ml-data-audit.onrender.com/docs
 
