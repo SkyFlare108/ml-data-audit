@@ -42,7 +42,7 @@ This tool is **model-agnostic** and does not use LLM APIs.
 
 ## Live Usage Instructions
 
-1. Go to the live frontend:
+1. Go to the live web app:
    [Link](https://skyflare108.github.io/ml-data-audit/)
 
 2. Upload a CSV file
