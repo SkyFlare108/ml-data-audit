@@ -142,85 +142,138 @@ export default function App() {
         </p>
       </header>
 
-      <form className="card" onSubmit={onAnalyze}>
-        <div className="row">
-          <label className="label">
-            CSV File
-            <input
-  type="file"
-  accept=".csv,text/csv"
-  onChange={(e) => {
-    const f = e.target.files?.[0] || null;
-    setFile(f);
-    setResult(null);
-    setErr("");
+      <form className="card upload-card" onSubmit={onAnalyze}>
+        <div className="row row--inputs">
+          <div className="label">
+            <label className="label-title" htmlFor="csv-file">
+              CSV File
+            </label>
+            <div className="file-input">
+              <input
+                id="csv-file"
+                className="file-input__native"
+                type="file"
+                accept=".csv,text/csv"
+                onChange={(e) => {
+                  const f = e.target.files?.[0] || null;
+                  setFile(f);
+                  setResult(null);
+                  setErr("");
 
-    if (!f) {
-      setColumns([]);
-      setSuggestedLabels([]);
-      setLabel("");
-      return;
-    }
+                  if (!f) {
+                    setColumns([]);
+                    setSuggestedLabels([]);
+                    setLabel("");
+                    return;
+                  }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const text = String(reader.result || "");
-      const firstLine = text.split(/\r?\n/)[0] || "";
-      const cols = parseCsvHeaderLine(firstLine);
+                  const looksLikeCsv =
+                    f.type === "text/csv" ||
+                    f.type === "application/vnd.ms-excel" ||
+                    f.name.toLowerCase().endsWith(".csv");
 
-      setColumns(cols);
+                  if (!looksLikeCsv) {
+                    setFile(null);
+                    setColumns([]);
+                    setSuggestedLabels([]);
+                    setLabel("");
+                    setErr("Please upload a valid .csv file.");
+                    e.target.value = "";
+                    return;
+                  }
 
-      const ranked = rankLabelCandidates(cols);
-      setSuggestedLabels(ranked.suggested);
+                  if (f.size === 0) {
+                    setFile(null);
+                    setColumns([]);
+                    setSuggestedLabels([]);
+                    setLabel("");
+                    setErr("That CSV file appears to be empty.");
+                    e.target.value = "";
+                    return;
+                  }
 
-      // auto-select best suggestion if available; else blank
-      setLabel(ranked.suggested[0] || "");
-    };
+                  const reader = new FileReader();
+                  reader.onload = () => {
+                    const text = String(reader.result || "");
+                    const firstLine = text.split(/\r?\n/)[0] || "";
+                    const cols = parseCsvHeaderLine(firstLine);
 
-    // Only read first ~64KB (enough to include header + some rows)
-    const blob = f.slice(0, 64 * 1024);
-    reader.readAsText(blob);
-  }}
-/>
-          </label>
-          <label className="label">
-  Label column (optional)
-  <select value={label} onChange={(e) => setLabel(e.target.value)}>
-    <option value="">(none)</option>
+                    if (cols.length === 0) {
+                      setFile(null);
+                      setColumns([]);
+                      setSuggestedLabels([]);
+                      setLabel("");
+                      setErr("Could not read a header row. Please upload a valid CSV.");
+                      e.target.value = "";
+                      return;
+                    }
 
-    {suggestedLabels.length > 0 && (
-      <optgroup label="Suggested">
-        {suggestedLabels.map((c) => (
-          <option key={`s-${c}`} value={c}>
-            {c}
-          </option>
-        ))}
-      </optgroup>
-    )}
+                    setColumns(cols);
 
-    {columns.length > 0 && (
-      <optgroup label="All columns">
-        {columns.map((c) => (
-          <option key={`a-${c}`} value={c}>
-            {c}
-          </option>
-        ))}
-      </optgroup>
-    )}
-  </select>
-          </label>
+                    const ranked = rankLabelCandidates(cols);
+                    setSuggestedLabels(ranked.suggested);
+
+                    // auto-select best suggestion if available; else blank
+                    setLabel(ranked.suggested[0] || "");
+                  };
+
+                  reader.onerror = () => {
+                    setFile(null);
+                    setColumns([]);
+                    setSuggestedLabels([]);
+                    setLabel("");
+                    setErr("Unable to read the selected file.");
+                    e.target.value = "";
+                  };
+
+                  // Only read first ~64KB (enough to include header + some rows)
+                  const blob = f.slice(0, 64 * 1024);
+                  reader.readAsText(blob);
+                }}
+              />
+              <label className="file-input__button" htmlFor="csv-file">
+                Choose File
+              </label>
+              <span className="file-input__name">
+                {file ? file.name : "No file selected"}
+              </span>
+            </div>
+          </div>
+          {file && columns.length > 0 && (
+            <label className="label">
+              <span className="label-title">Label column (optional)</span>
+              <select value={label} onChange={(e) => setLabel(e.target.value)}>
+                <option value="">(none)</option>
+
+                {suggestedLabels.length > 0 && (
+                  <optgroup label="Suggested">
+                    {suggestedLabels.map((c) => (
+                      <option key={`s-${c}`} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </optgroup>
+                )}
+
+                {columns.length > 0 && (
+                  <optgroup label="All columns">
+                    {columns.map((c) => (
+                      <option key={`a-${c}`} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </optgroup>
+                )}
+              </select>
+            </label>
+          )}
         </div>
 
-        <div className="row">
+        <div className="row row--actions">
           <button type="submit" disabled={loading}>
             {loading ? "Analyzing..." : "Analyze"}
           </button>
 
-          {file && (
-            <span className="muted">
-              Selected: <span className="mono">{file.name}</span>
-            </span>
-          )}
         </div>
 
         {err && <p className="error">Error: {err}</p>}
@@ -278,9 +331,6 @@ export default function App() {
         </div>
       )}
 
-      <footer className="footer muted">
-        Backend expected at <span className="mono">http://127.0.0.1:8000</span>
-      </footer>
     </div>
   );
 }
