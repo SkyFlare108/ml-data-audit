@@ -9,7 +9,7 @@ Demo (GitHub Pages):
 API Docs:  
 👉 https://ml-data-audit.onrender.com/docs
 
-Run this to ensure backend does not hang:
+Run: (To ensure Backend doesn't hang)
 👉 https://ml-data-audit.onrender.com
 
 ---
